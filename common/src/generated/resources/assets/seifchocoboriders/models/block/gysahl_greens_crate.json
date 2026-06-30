@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "seifchocoboriders:block/gysahl_greens_crate_side",
+    "top": "seifchocoboriders:block/gysahl_greens_crate_top"
+  }
+}

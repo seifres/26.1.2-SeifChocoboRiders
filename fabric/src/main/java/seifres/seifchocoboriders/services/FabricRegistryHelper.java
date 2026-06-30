@@ -1,0 +1,82 @@
+package seifres.seifchocoboriders.services;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import seifres.seifchocoboriders.services.types.IPlatformHelper;
+import seifres.seifchocoboriders.services.types.IRegistryHelper;
+import seifres.seifchocoboriders.services.util.RegistryHandle;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public class FabricRegistryHelper implements IRegistryHelper {
+
+    @Override
+    public <T extends Block> RegistryHandle<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> block) {
+        ResourceKey<Block> key = IRegistryHelper.blockKey(name);
+        Identifier id = key.identifier();
+        T registered = Registry.register(BuiltInRegistries.BLOCK, id,
+                block.apply(BlockBehaviour.Properties.of().setId(key)));
+
+        return new RegistryHandle<T>() {
+            @Override
+            public Identifier id() {
+                return id;
+            }
+
+            @Override
+            public T get() {
+                return registered;
+            }
+        };
+    }
+
+    @Override
+    public <T extends BlockItem> RegistryHandle<T> registerBlockItem(String name, RegistryHandle<? extends Block> block, BiFunction<Block, Item.Properties, T> item) {
+        return registerItem(name,properties -> item.apply(block.get(), properties));
+    }
+
+    @Override
+    public <T extends Item> RegistryHandle<T> registerItem(String name, Function<Item.Properties, T> item) {
+        ResourceKey<Item> key = IRegistryHelper.itemKey(name);
+        Identifier id = key.identifier();
+        T registered = Registry.register(BuiltInRegistries.ITEM, id, item.apply(new Item.Properties().setId(key)));
+
+        return new RegistryHandle<>(){
+            @Override
+            public Identifier id() {
+                return id;
+            }
+            @Override
+            public T get() {
+                return registered;
+            }
+        };
+    }
+
+    @Override
+    public <T extends Entity> RegistryHandle<EntityType<T>> registerEntityType(String name, EntityType.Builder<T> builder) {
+        ResourceKey<EntityType<?>> key = IRegistryHelper.entityTypeKey(name);
+        Identifier id = key.identifier();
+        EntityType<T> registered = Registry.register(BuiltInRegistries.ENTITY_TYPE, id, builder.build(key));
+        return new RegistryHandle<>(){
+            @Override
+            public Identifier id() {
+                return id;
+            }
+            @Override
+            public EntityType<T> get() {
+                return registered;
+            }
+        };
+    }
+}

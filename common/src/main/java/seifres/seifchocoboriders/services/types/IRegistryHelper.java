@@ -1,0 +1,58 @@
+package seifres.seifchocoboriders.services.types;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import seifres.seifchocoboriders.Constants;
+import seifres.seifchocoboriders.services.util.BlockwithItemRegistryHandle;
+import seifres.seifchocoboriders.services.util.RegistryHandle;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public interface IRegistryHelper {
+
+    //Register Blocks
+    default <T extends Block> BlockwithItemRegistryHandle<T> registerBlockWithItem(String name,
+                                                                                Function<BlockBehaviour.Properties, T> block){
+        return registerBlockWithItem(name, block, BlockItem::new);
+    }
+    default <T extends Block>BlockwithItemRegistryHandle<T> registerBlockWithItem(String name,
+                                                                       Function<BlockBehaviour.Properties, T> block,
+                                                                               BiFunction<Block, Item.Properties,
+                                                                                       BlockItem> item) {
+        RegistryHandle<T> blockHandle = registerBlock(name, block);
+        RegistryHandle<BlockItem> itemHandle = registerBlockItem(name, blockHandle, item);
+        return new BlockwithItemRegistryHandle<>(blockHandle,itemHandle);
+    }
+
+    <T extends Block> RegistryHandle<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> block);
+
+    <T extends BlockItem> RegistryHandle<T> registerBlockItem(String name, RegistryHandle<? extends Block> block,
+                                                              BiFunction<Block, Item.Properties, T> item);
+
+    static ResourceKey<Block> blockKey(String name) {
+        return ResourceKey.create(Registries.BLOCK, Constants.id(name));
+    }
+
+    //Register Items.
+    <T extends Item> RegistryHandle<T> registerItem(String name, Function<Item.Properties, T> item);
+
+    static ResourceKey<Item> itemKey(String name) {
+        return ResourceKey.create(Registries.ITEM, Constants.id(name));
+    }
+
+    //Register Entity
+    <T extends Entity> RegistryHandle<EntityType<T>> registerEntityType(String name, EntityType.Builder<T> builder);
+
+    static ResourceKey<EntityType<?>> entityTypeKey(String name) {
+        return ResourceKey.create(Registries.ENTITY_TYPE, Constants.id(name));
+    }
+//
+}
+
