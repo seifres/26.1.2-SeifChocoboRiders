@@ -1,0 +1,6 @@
+{
+  "parent": "seifchocoboriders:block/gysahlgreenscropcrosstemplate",
+  "textures": {
+    "gysahl_greens_crop": "seifchocoboriders:block/gysahl_greens_crop_stage4"
+  }
+}
