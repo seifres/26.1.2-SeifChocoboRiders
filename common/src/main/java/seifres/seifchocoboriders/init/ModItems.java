@@ -1,7 +1,7 @@
 package seifres.seifchocoboriders.init;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.FarmlandBlock;
+import seifres.seifchocoboriders.items.GysahlGreensSeed;
 import seifres.seifchocoboriders.services.Services;
 import seifres.seifchocoboriders.services.util.RegistryHandle;
 
@@ -49,6 +49,6 @@ public final class ModItems {
                 "gysahl_greens", properties -> new Item(properties.stacksTo(32)));
 
         public static final RegistryHandle<Item> GYSAHL_GREENS_SEED = Services.REGISTRY.registerItem(
-                "gysahl_greens_seed",properties -> new Item(properties.stacksTo(32)));
+                "gysahl_greens_seed",properties -> new GysahlGreensSeed(properties.stacksTo(32)));
 }
 

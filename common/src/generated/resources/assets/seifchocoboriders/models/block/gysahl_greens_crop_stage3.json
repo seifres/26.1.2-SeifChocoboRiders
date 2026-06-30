@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/crop",
-  "textures": {
-    "crop": "seifchocoboriders:block/gysahl_greens_crop_stage3"
-  }
-}

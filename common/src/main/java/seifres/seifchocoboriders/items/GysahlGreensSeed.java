@@ -1,11 +1,8 @@
 package seifres.seifchocoboriders.items;
 
-import net.minecraft.advancements.criterion.ChangeDimensionTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,9 +21,9 @@ public class GysahlGreensSeed extends Item {
         BlockPos clickedPos = context.getClickedPos();
         Direction clickedFace = context.getClickedFace();
         Player player = context.getPlayer();
-        ItemStack itemStack = player.getItemInHand(hand);
+        ItemStack itemStack = context.getItemInHand();
 
-        if (clickedFace != Direction.Up) {
+        if (clickedFace != Direction.UP) {
             return InteractionResult.PASS;
         }
 
@@ -47,7 +44,7 @@ public class GysahlGreensSeed extends Item {
                 }
             }
 
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.PASS;

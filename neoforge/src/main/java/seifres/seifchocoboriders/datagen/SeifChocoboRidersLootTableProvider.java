@@ -71,7 +71,7 @@ public class SeifChocoboRidersLootTableProvider extends LootTableProvider {
                             .when(isFullyGrown)
                                 .setRolls(ConstantValue.exactly(3))
                                 .add(LootItem.lootTableItem(ModItems.GYSAHL_GREENS_SEED.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1,2))))
-                                .add(LootItem.lootTableItem(ModItems.GYSAHL_GREENS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1,2)))));
+                                .add(LootItem.lootTableItem(ModItems.GYSAHL_GREENS.get())));
 
 
 

@@ -9,8 +9,6 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import seifres.seifchocoboriders.Constants;
 import seifres.seifchocoboriders.block.GysahlGreensCrop;
 import seifres.seifchocoboriders.init.ModBlocks;
@@ -51,31 +49,33 @@ public class SeifChocoboRidersModelProvider extends ModelProvider {
 
         blockModels.createTrivialBlock(ModBlocks.GYSAHL_GREENS_CRATE.block().get(), TexturedModel.CUBE_TOP);
 
-        makeCrop(blockModels, ModBlocks.GYSAHL_GREENS_CROP.block().get(), GysahlGreensCrop.AGE, "gysahl_greens_crop");
+        makeCrop(blockModels, ModBlocks.GYSAHL_GREENS_CROP.block().get(),"gysahl_greens_crop");
 
 
 
     }
 
-    private void makeCrop(BlockModelGenerators blockModels, GysahlGreensCrop block, IntegerProperty ageProperty, String textureName) {
-        int maxAge = ageProperty.getPossibleValues().stream().mapToInt(i -> i).max().orElse(7);
+    private static final TextureSlot TEXTURE_A = TextureSlot.create("gysahl_greens_crop");
 
-        var dispatch = PropertyDispatch.initial(ageProperty);
+    private void makeCrop(BlockModelGenerators blockModels, GysahlGreensCrop block, String textureNameA) {
+        int maxAge = GysahlGreensCrop.MAX_AGE;
+
+        var dispatch = PropertyDispatch.initial(GysahlGreensCrop.AGE);
+
         for (int age = 0; age <= maxAge; age++) {
-            Identifier texture = Identifier.fromNamespaceAndPath(Constants.MOD_ID,
-                    "block/" + textureName + "_stage" + age);
+            Identifier texture_A = Identifier.fromNamespaceAndPath(Constants.MOD_ID,
+                    "block/" + textureNameA + "_stage" + age);
             Identifier modelId = Identifier.fromNamespaceAndPath(Constants.MOD_ID,
-                    "block/" + textureName + "_stage" + age);
+                    "block/" + textureNameA + "_stage" + age);
 
             ModelTemplate cropTemplate = new ModelTemplate(
-                    Optional.of(Identifier.withDefaultNamespace("block/crop")),
+                    Optional.of(Identifier.fromNamespaceAndPath(MOD_ID, "block/gysahlgreenscropcrosstemplate")),
                     Optional.empty(),
-                    TextureSlot.CROP
+                    TEXTURE_A
             );
 
-            cropTemplate.create(
-                    modelId,
-                    new TextureMapping().put(TextureSlot.CROP, new Material(texture)),
+            cropTemplate.create(modelId,
+                    new TextureMapping().put(TEXTURE_A, new Material(texture_A)),
                     blockModels.modelOutput
             );
 
