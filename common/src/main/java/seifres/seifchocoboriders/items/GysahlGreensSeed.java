@@ -10,13 +10,14 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.NonNull;
 import seifres.seifchocoboriders.init.ModBlocks;
 
 public class GysahlGreensSeed extends Item {
     public GysahlGreensSeed( Properties properties){ super(properties);}
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NonNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();
         Direction clickedFace = context.getClickedFace();

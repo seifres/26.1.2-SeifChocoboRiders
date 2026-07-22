@@ -1,9 +1,6 @@
 package seifres.seifchocoboriders;
 
-import seifres.seifchocoboriders.init.ModBlocks;
-import seifres.seifchocoboriders.init.ModEntityAttributes;
-import seifres.seifchocoboriders.init.ModEntityTypes;
-import seifres.seifchocoboriders.init.ModItems;
+import seifres.seifchocoboriders.init.*;
 import seifres.seifchocoboriders.services.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Items;
@@ -35,9 +32,12 @@ public class CommonClass {
         ModEntityTypes.load();
         ModBlocks.load();
         ModItems.load();
+        ModAttributes.load();
+        ModMenus.load();
+
+
         ModEntityAttributes.load();
+
+
     }
-
-
-
 }

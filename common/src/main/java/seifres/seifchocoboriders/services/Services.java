@@ -2,6 +2,7 @@ package seifres.seifchocoboriders.services;
 
 import seifres.seifchocoboriders.Constants;
 import seifres.seifchocoboriders.services.types.IAttributeRegistryHelper;
+import seifres.seifchocoboriders.services.types.IMenuOpener;
 import seifres.seifchocoboriders.services.types.IPlatformHelper;
 import seifres.seifchocoboriders.services.types.IRegistryHelper;
 
@@ -12,6 +13,7 @@ public class Services {
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
     public static final IRegistryHelper REGISTRY = load(IRegistryHelper.class);
     public static final IAttributeRegistryHelper ATTRIBUTES = load(IAttributeRegistryHelper.class);
+    public static final IMenuOpener MENU_OPENER = load(IMenuOpener.class);
 
     public static <T> T load(Class<T> clazz) {
 

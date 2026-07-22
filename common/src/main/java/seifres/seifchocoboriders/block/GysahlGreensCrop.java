@@ -29,7 +29,6 @@ public class GysahlGreensCrop extends CropBlock {
     public static final IntegerProperty AGE;
     private static final VoxelShape[] SHAPES;
 
-
     public GysahlGreensCrop(Properties properties) {
         super(properties);
     }
@@ -54,7 +53,7 @@ public class GysahlGreensCrop extends CropBlock {
 
 
     @Override
-    protected void randomTick(@NonNull BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, RandomSource random) {
+    protected void randomTick(@NonNull BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, @NonNull RandomSource random) {
         if (random.nextInt(MAX_AGE) != 0) {
             super.randomTick(state, level, pos, random);
         }
@@ -80,7 +79,6 @@ public class GysahlGreensCrop extends CropBlock {
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(BlockTags.SUPPORTS_VEGETATION);
     }
-
 
     static {
         AGE = BlockStateProperties.AGE_5;

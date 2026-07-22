@@ -1,6 +1,15 @@
 {
   "block.seifchocoboriders.gysahl_greens_crate": "Gysahl Greens Crate",
+  "entity.minecraft.villager.chocobo_rancher": "Chocobo Rancher",
   "entity.seifchocoboriders.chocobo_entity": "Chocobo Entity",
+  "entity.seifchocoboriders.chocobo_training": "Chocobo Training",
+  "entity.seifchocoboriders.chocobo_training_named": "Chocobo Training - %s",
+  "item.seifchocoboriders.chocobo_training_scroll_level_1": "Chocobo Training Scroll Level 1",
+  "item.seifchocoboriders.chocobo_training_scroll_level_2": "Chocobo Training Scroll Level 2",
+  "item.seifchocoboriders.chocobo_training_scroll_level_3": "Chocobo Training Scroll Level 3",
+  "item.seifchocoboriders.chocobo_training_scroll_level_4": "Chocobo Training Scroll Level 4",
+  "item.seifchocoboriders.chocobo_training_scroll_level_5": "Chocobo Training Scroll Level 5",
+  "item.seifchocoboriders.chocobo_training_whip": "Chocobo Training Whip",
   "item.seifchocoboriders.chocobo_whistle_black": "Chocobo Whistle Black",
   "item.seifchocoboriders.chocobo_whistle_blue": "Chocobo Whistle Blue",
   "item.seifchocoboriders.chocobo_whistle_brown": "Chocobo Whistle Brown",
@@ -20,5 +29,10 @@
   "item.seifchocoboriders.gysahl_greens": "Gysahl Greens",
   "item.seifchocoboriders.gysahl_greens_crate": "Gysahl Greens Crate",
   "item.seifchocoboriders.gysahl_greens_crop": "Gysahl Greens Crop",
-  "item.seifchocoboriders.gysahl_greens_seed": "Gysahl Greens Seed"
+  "item.seifchocoboriders.gysahl_greens_seed": "Gysahl Greens Seed",
+  "stat.seifchocoboriders.flap_capacity": "Flap Stamina",
+  "stat.seifchocoboriders.flight_speed": "Flight Speed",
+  "stat.seifchocoboriders.jump_strength": "Jump Strength",
+  "stat.seifchocoboriders.land_speed": "Land Speed",
+  "stat.seifchocoboriders.max_health": "Max Health"
 }

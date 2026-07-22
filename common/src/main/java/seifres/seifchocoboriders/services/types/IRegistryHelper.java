@@ -4,13 +4,19 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import seifres.seifchocoboriders.Constants;
+import seifres.seifchocoboriders.entities.ChocoboTrainingMenu;
 import seifres.seifchocoboriders.services.util.BlockwithItemRegistryHandle;
 import seifres.seifchocoboriders.services.util.RegistryHandle;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import java.util.function.Supplier;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -53,6 +59,22 @@ public interface IRegistryHelper {
     static ResourceKey<EntityType<?>> entityTypeKey(String name) {
         return ResourceKey.create(Registries.ENTITY_TYPE, Constants.id(name));
     }
-//
+
+    //Register Attributes
+    <T extends Attribute> RegistryHandle<T> registerAttribute(String name, Supplier<T> attribute);
+
+    static ResourceKey<Attribute> attributeKey(String name) {
+        return ResourceKey.create(Registries.ATTRIBUTE, Constants.id(name));
+    }
+
+    //Register Entity Menu
+
+
+    static ResourceKey<MenuType<?>> menuTypeKey(String name) {
+        return ResourceKey.create(Registries.MENU, Constants.id(name));
+    }
+
+    <T extends AbstractContainerMenu> RegistryHandle<MenuType<T>> registerEntityMenuType(String name,
+                                                                                         Class<T> menuClass);
 }
 

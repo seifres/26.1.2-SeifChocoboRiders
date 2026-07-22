@@ -1,6 +1,5 @@
 package seifres.seifchocoboriders.datagen;
 
-import io.netty.util.Constant;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -74,14 +72,9 @@ public class SeifChocoboRidersLootTableProvider extends LootTableProvider {
                                 .add(LootItem.lootTableItem(ModItems.GYSAHL_GREENS.get())));
 
 
-
-
             dropSelf(ModBlocks.GYSAHL_GREENS_CRATE.block().get());
 
-
         }
-
-
 
         @Override
         protected @NonNull Iterable<Block> getKnownBlocks() {

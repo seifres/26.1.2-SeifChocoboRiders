@@ -19,6 +19,7 @@ loom {
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir('runs/client')
+            programArgs(["--username", "topher", "--uuid", "6f07899c-1111-2222-3333-1f53f7a0e111"])
         }
         server {
             server()

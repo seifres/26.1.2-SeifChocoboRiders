@@ -2,6 +2,7 @@ package seifres.seifchocoboriders.init;
 
 
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -24,5 +25,6 @@ public final class ModBlocks {
             Services.REGISTRY.registerBlockWithItem(
                     "gysahl_greens_crop",
                     properties -> new GysahlGreensCrop(properties.noCollision().randomTicks().instabreak().sound(SoundType.CROP)));
+
 
 }

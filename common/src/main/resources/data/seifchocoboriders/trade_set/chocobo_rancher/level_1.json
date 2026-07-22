@@ -1,0 +1,11 @@
+{
+  "amount": 2,
+  "random_sequence": "seifchocoboriders:trade_set/chocobo_rancher/level_1",
+  "allow_duplicates": false,
+  "trades": [
+    "seifchocoboriders:chocobo_rancher/buy_gysahl_greens",
+    "seifchocoboriders:chocobo_rancher/sell_gysahl_greens",
+    "seifchocoboriders:chocobo_rancher/sell_chocobo_training_scroll_level1"
+
+  ]
+}

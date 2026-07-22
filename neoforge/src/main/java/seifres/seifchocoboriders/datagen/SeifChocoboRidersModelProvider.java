@@ -43,6 +43,13 @@ public class SeifChocoboRidersModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.CHOCOBO_WHISTLE_WHITE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.CHOCOBO_WHISTLE_YELLOW.get(), ModelTemplates.FLAT_ITEM);
 
+        itemModels.generateFlatItem(ModItems.CHOCOBO_TRAINING_WHIP.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.CHOCOBO_SCROLL_TRAINING_LEVEL_1.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.CHOCOBO_SCROLL_TRAINING_LEVEL_2.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.CHOCOBO_SCROLL_TRAINING_LEVEL_3.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.CHOCOBO_SCROLL_TRAINING_LEVEL_4.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.CHOCOBO_SCROLL_TRAINING_LEVEL_5.get(), ModelTemplates.FLAT_ITEM);
+
         itemModels.generateFlatItem(ModItems.GYSAHL_GREENS.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.GYSAHL_GREENS_SEED.get(), ModelTemplates.FLAT_ITEM);
 

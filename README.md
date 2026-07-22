@@ -1,7 +1,10 @@
-# MultiLoader Template
+# Chocobo Riders
 
 ### IntelliJ IDEA
 
-## Development Guide
-When using this template the majority of your mod should be developed in the `common` project. The `common` project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The `common` project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the `fabric` or `neoforge` projects.
+## Features 
 
+-Added Rideable / Trainable Chocobos to the world.  Chocobos come in the Minecraft 16 colors. Chocobos run, jump, 
+and glide through the air.  
+
+ 
