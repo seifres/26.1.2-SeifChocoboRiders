@@ -1,0 +1,20 @@
+{
+  "chocobo_flute": {
+    "sounds": [
+      {
+        "name": "seifchocoboriders:chocobo_flute",
+        "volume": 1.5
+      }
+    ],
+    "subtitle": "seifchocoboriders.chocobo_flute"
+  },
+  "chocobo_kweh": {
+    "sounds": [
+      {
+        "name": "seifchocoboriders:chocobo_kweh",
+        "volume": 1.5
+      }
+    ],
+    "subtitle": "seifchocoboriders.chocobo_kweh"
+  }
+}
