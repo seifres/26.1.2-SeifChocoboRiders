@@ -10,4 +10,8 @@ public class PacketHandler {
     public static void sendJumpToServer() {
         if (INSTANCE != null) INSTANCE.sendJumpToServer();
     }
+
+    public static void sendTrainingDataRequest(int containerId) {
+        if (INSTANCE != null) INSTANCE.sendTrainingDataRequest(containerId);
+    }
 }

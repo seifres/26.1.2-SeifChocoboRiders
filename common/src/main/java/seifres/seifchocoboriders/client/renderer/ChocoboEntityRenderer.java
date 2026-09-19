@@ -1,5 +1,6 @@
 package seifres.seifchocoboriders.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
@@ -29,6 +30,8 @@ public class ChocoboEntityRenderer extends MobRenderer<ChocoboEntity, ChocoboRen
     private static final Identifier YELLOW_CHOCOBO = Constants.id("textures/entity/chocobo_texture_yellow.png");
     private static final Identifier TEXTURE_LOCATION = Constants.id("textures/entity/chocobo_texture_yellow.png");
 
+    private static final float BABY_MODEL_SCALE = 0.5f;
+
     public ChocoboEntityRenderer(EntityRendererProvider.Context context) {
         super(context, new ChocoboEntityModel(context.bakeLayer(ChocoboEntityModel.LAYER_LOCATION)), 0.6f);
     }
@@ -53,6 +56,13 @@ public class ChocoboEntityRenderer extends MobRenderer<ChocoboEntity, ChocoboRen
         state.yHeadRot = Mth.lerp(partialTick, entity.yHeadRotO, entity.yHeadRot);
         state.yBodyRot = Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
         state.texture = entity.getVariant().getTexture();
+    }
+
+    @Override
+    protected void scale(@NonNull ChocoboRendererState state, @NonNull PoseStack poseStack) {
+        if (state.isBaby) {
+            poseStack.scale(BABY_MODEL_SCALE, BABY_MODEL_SCALE, BABY_MODEL_SCALE);
+        }
     }
 
 }

@@ -1,13 +1,13 @@
 {
   "gives": {
-    "count": 1,
+    "count": 20,
     "id": "minecraft:emerald"
   },
-  "max_uses": 16,
+  "max_uses": 10,
   "reputation_discount": 0.05,
   "wants": {
-    "count": 4,
-    "id": "seifchocoboriders:gysahl_greens"
+    "count": 64,
+    "id": "seifchocoboriders:gysahl_greens_bundle"
   },
   "xp": 2
 }

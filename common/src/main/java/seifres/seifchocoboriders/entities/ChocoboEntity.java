@@ -1,8 +1,10 @@
 package seifres.seifchocoboriders.entities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,10 +22,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,16 +38,20 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+import seifres.seifchocoboriders.Constants;
 import seifres.seifchocoboriders.init.ModAttributes;
+import seifres.seifchocoboriders.init.ModDataComponents;
 import seifres.seifchocoboriders.init.ModEntityTypes;
 import seifres.seifchocoboriders.init.ModItems;
 import seifres.seifchocoboriders.init.ModSounds;
-import seifres.seifchocoboriders.items.ChocoboScrollTrainingItem;
+import seifres.seifchocoboriders.items.ChocoboWhistleItem;
 import seifres.seifchocoboriders.services.Services;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 
 public class ChocoboEntity extends TamableAnimal {
@@ -49,14 +59,16 @@ public class ChocoboEntity extends TamableAnimal {
     private static final EntityDataAccessor<Integer> FLAP_REQUEST_TICKS;
     private static final EntityDataAccessor<Boolean> IS_GLIDING;
     private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> OWNER_UUID_DATA;
+    private float sitLockedYRot;
+    private float sitLockedYBodyRot;
+    private float sitLockedYHeadRot;
     private int remainingFlaps = 0;
     private boolean holdGliding;
     private int flapCooldownTicks;
     private UUID boundPlayerUuid;
     private boolean trainingMenuOpen = false;
     private final ChocoboTrainingContainer trainingContainer = new ChocoboTrainingContainer(this);
-
-    //Ingredient temptItems = Ingredient.of(ModItems.GYSAHL_GREENS.get());
+    private static final Ingredient TEMPT_ITEMS = Ingredient.of(ModItems.GYSAHL_GREENS.get());
 
     public ChocoboEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super( type, level);
@@ -64,12 +76,17 @@ public class ChocoboEntity extends TamableAnimal {
 
     public static AttributeSupplier.@NonNull Builder createAttributes(){
         return Animal.createAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 10)
-                .add(Attributes.MOVEMENT_SPEED, 0.12D)
+                .add(Attributes.MAX_HEALTH, 5)
+                .add(Attributes.MOVEMENT_SPEED, 0.16D)
                 .add(Attributes.JUMP_STRENGTH, 1.0D)
                 .add(Attributes.SAFE_FALL_DISTANCE, 1000D)
                 .add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(ModAttributes.CHOCOBO_FLIGHT_SPEED.get()), 0.02D)
-                .add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(ModAttributes.CHOCOBO_FLAP_CAPACITY.get()), 2.0D);
+                .add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(ModAttributes.CHOCOBO_FLAP_CAPACITY.get()), 2.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0F)
+                .add(Attributes.ATTACK_SPEED,1)
+                .add(Attributes.ATTACK_KNOCKBACK,0)
+                .add(Attributes.ARMOR,0)
+                .add(Attributes.ARMOR_TOUGHNESS,0);
     }
 
     @Override
@@ -78,19 +95,31 @@ public class ChocoboEntity extends TamableAnimal {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new TamableAnimalPanicGoal( 1.25D, DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES));
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0D, 10, 2));
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.2D));
-      //  this.goalSelector.addGoal(5, new TemptGoal(this, 1.0, temptItems, true));
-        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 120, false));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 10.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, (double)1.0F, true));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, (double)1.0F, 10.0F, 2.0F));
+        this.goalSelector.addGoal(7, new BreedGoal(this, 1.2D));
+        this.goalSelector.addGoal(7, new TemptGoal(this, 1.0D, TEMPT_ITEMS, true));
+        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D, 120, false));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 7.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, AbstractSkeleton.class, false));
+
     }
+
 
     //-----Chocobo Interaction---------------------------------------
 
     @Override
     public @NonNull InteractionResult mobInteract(@NonNull Player player, @NonNull InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
+
+        if (player.isShiftKeyDown() && itemStack.is(ModItems.CHOCOBO_WHISTLE.get())) {
+            return InteractionResult.PASS;
+        }
 
         if (!level().isClientSide()) {
 
@@ -106,12 +135,23 @@ public class ChocoboEntity extends TamableAnimal {
                 return InteractionResult.SUCCESS;
             }
 
-            if (isTame() && isOwnedBy(player) && itemStack.is(ModItems.CHOCOBO_TRAINING_WHIP.get())) {
+            if (isTame() && isOwnedBy(player) && itemStack.is(ModItems.CHOCOBO_TRAINING_WHIP.get())
+                    && !player.isShiftKeyDown()) {
                 if (player instanceof ServerPlayer serverPlayer) {
+                    Constants.LOG.info("Setting trainingMenuOpen = true on chocobo {}", this.getId());
                     this.setTrainingMenuOpen(true);
-
                     Services.MENU_OPENER.createMenuProviderForChocoboEntity(player, this, getId());
                 }
+                return InteractionResult.SUCCESS;
+            }
+
+            if (isTame() && isOwnedBy(player) && itemStack.is(ModItems.GYSAHL_GREENS.get())) {
+                itemStack.consume(1, player);
+                if (this.getHealth() < this.getMaxHealth()) {
+                    this.heal(2.0F);
+                }
+                this.playSound(SoundEvents.HORSE_EAT, 1.0F, 1.0F);
+                level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
                 return InteractionResult.SUCCESS;
             }
 
@@ -119,9 +159,16 @@ public class ChocoboEntity extends TamableAnimal {
                     // ---- Shift + Right-click: toggle sit ---------------------------
                 if (player.isShiftKeyDown()){
                     setOrderedToSit(!isOrderedToSit());
+
                     this.jumping = false;
                     this.navigation.stop();
                     setTarget(null);
+
+                    this.sitLockedYRot = this.yRotO;
+                    this.sitLockedYBodyRot = this.yBodyRot;
+
+                    Constants.LOG.info("SitTold - sitLockedYRot: "+ this.sitLockedYRot);
+                    Constants.LOG.info("SitTold - sitLockedYBodyRot: "+ this.sitLockedYBodyRot);
 
                     // Dismount rider if sitting down
                     if (isOrderedToSit()) {
@@ -157,11 +204,33 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     public void setTrainingMenuOpen(boolean open) {
-        this.trainingMenuOpen = open;
+
         if (open) {
             this.navigation.stop();
             this.getMoveControl().setWait();
         }
+    }
+
+    @Override
+    public void setOrderedToSit(boolean sit) {
+        super.setOrderedToSit(sit);
+        if (sit) {
+            ejectPassengers();
+            this.sitLockedYRot = this.yRotO;
+            this.sitLockedYBodyRot = this.yBodyRot;
+            this.sitLockedYHeadRot = this.yHeadRot;
+
+        }
+    }
+
+    // --- Stand up if attacked while sitting ------------------------------------
+    @Override
+    public boolean hurtServer(@NonNull ServerLevel level, @NonNull DamageSource source, float amount) {
+        boolean hurt = super.hurtServer(level, source, amount);
+        if (hurt && isOrderedToSit()) {
+            setOrderedToSit(false);
+        }
+        return hurt;
     }
 
     private class StayStillForTrainingGoal extends Goal {
@@ -224,6 +293,16 @@ public class ChocoboEntity extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
+
+        if (isOrderedToSit()) {
+            this.setYRot(sitLockedYRot);
+            this.setYBodyRot(sitLockedYBodyRot);
+            this.setYHeadRot(sitLockedYHeadRot);
+            this.yRotO = sitLockedYRot;
+            this.yBodyRotO = sitLockedYBodyRot;
+            this.yHeadRotO = sitLockedYHeadRot;
+
+        }
 
         if (this.entityData.get(FLAP_REQUEST_TICKS) > 0) {
             this.entityData.set(FLAP_REQUEST_TICKS, this.entityData.get(FLAP_REQUEST_TICKS) - 1);
@@ -314,7 +393,7 @@ public class ChocoboEntity extends TamableAnimal {
 
         velocity = velocity.add(forwardVec.scale(thrust));
         velocity = velocity.add(rightVec.scale(sideways * 0.022));
-        double vertical = velocity.y - 0.028;
+        double vertical = velocity.y - 0.010;  //Gravity Lower number slower fall
         if (rider.getXRot() < -12.0F) {
             vertical += 0.018;
         } else if (rider.getXRot() > 18.0F) {
@@ -327,7 +406,7 @@ public class ChocoboEntity extends TamableAnimal {
         }
 
         if (this.holdGliding) {
-            vertical -= 0.17;
+            vertical -= 0.05; //0.17;
         }
 
         vertical = Mth.clamp(vertical, -0.68, 0.92);
@@ -408,7 +487,38 @@ public class ChocoboEntity extends TamableAnimal {
                                         @Nullable SpawnGroupData spawnData) {
         ChocoboVariant[] variants = ChocoboVariant.values();
         setVariant(variants[this.random.nextInt(variants.length)]);
+
+        Constants.LOG.info("Before MAX_HEALTH randomize");
+        randomizeAttribute(Attributes.MAX_HEALTH, ChocoboStat.MAX_HEALTH.spawnMin(), ChocoboStat.MAX_HEALTH.spawnMax());
+        Constants.LOG.info("Before MOVEMENT_SPEED randomize");
+        randomizeAttribute(Attributes.MOVEMENT_SPEED, ChocoboStat.LAND_SPEED.spawnMin(), ChocoboStat.LAND_SPEED.spawnMax());
+        Constants.LOG.info("Before FLIGHT_SPEED randomize");
+        randomizeAttribute(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(ModAttributes.CHOCOBO_FLIGHT_SPEED.get()), ChocoboStat.FLIGHT_SPEED.spawnMin(), ChocoboStat.FLIGHT_SPEED.spawnMax());
+        Constants.LOG.info("Before JUMP_STRENGTH randomize");
+        randomizeAttribute(Attributes.JUMP_STRENGTH, ChocoboStat.JUMP_STRENGTH.spawnMin(), ChocoboStat.JUMP_STRENGTH.spawnMax());
+        Constants.LOG.info("Before FLAP_CAPACITY randomize");
+        randomizeAttribute(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(ModAttributes.CHOCOBO_FLAP_CAPACITY.get()), ChocoboStat.FLAP_CAPACITY.spawnMin(), ChocoboStat.FLAP_CAPACITY.spawnMax());
+        Constants.LOG.info("Before ATTACK_DAMAGE randomize");
+        randomizeAttribute(Attributes.ATTACK_DAMAGE, ChocoboStat.ATTACK_DAMAGE.spawnMin(), ChocoboStat.ATTACK_DAMAGE.spawnMax());
+        Constants.LOG.info("Made it past ATTACK_DAMAGE");
+        randomizeAttribute(Attributes.ATTACK_SPEED, ChocoboStat.ATTACK_SPEED.spawnMin(), ChocoboStat.ATTACK_SPEED.spawnMax());
+        randomizeAttribute(Attributes.ATTACK_KNOCKBACK, ChocoboStat.ATTACK_KNOCKBACK.spawnMin(), ChocoboStat.ATTACK_KNOCKBACK.spawnMax());
+        randomizeAttribute(Attributes.ARMOR, ChocoboStat.ARMOR.spawnMin(), ChocoboStat.ARMOR.spawnMax());
+        randomizeAttribute(Attributes.ARMOR_TOUGHNESS, ChocoboStat.ARMOR_TOUGHNESS.spawnMin(), ChocoboStat.ARMOR_TOUGHNESS.spawnMax());
+        this.setHealth(this.getMaxHealth()); // spawn at full health for whatever MAX_HEALTH just rolled
+
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+    }
+
+    private void randomizeAttribute(Holder<Attribute> attribute, double min, double max) {
+        AttributeInstance instance = this.getAttribute(attribute);
+        if (instance == null) return;
+
+        double rolled = min + this.random.nextDouble() * (max - min);
+        Constants.LOG.info("Attribute: {}", attribute);
+        Constants.LOG.info("rolled: {}", rolled);
+
+        instance.setBaseValue(rolled);
     }
 
     @Override
@@ -427,12 +537,12 @@ public class ChocoboEntity extends TamableAnimal {
         super.readAdditionalSaveData(input);
         setVariant(ChocoboVariant.byID(input.getIntOr("Variant", 0)));
         input.child("Training").ifPresent(trainingContainer::load);
-        recalculateTrainingBonuses(); // rebuild attribute modifiers from loaded slot contents
+        recalculateTrainingBonuses();
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.@NonNull Builder builder) {
-        super.defineSynchedData(builder); // ← must be first
+        super.defineSynchedData(builder);
         builder.define(IS_GLIDING, false);
         builder.define(FLAP_REQUEST_TICKS, 0);
         builder.define(VARIANT, 0);
@@ -461,6 +571,54 @@ public class ChocoboEntity extends TamableAnimal {
         }
     }
 
+    // --- Keep any bound whistle's displayed name in sync with this Chocobo's name -------
+    @Override
+    public void setCustomName(@Nullable Component name) {
+        super.setCustomName(name);
+        if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
+            forEachBoundWhistle(serverLevel, (player, inventory, slot, whistle) -> {
+                ChocoboWhistleItem.applyBoundName(whistle, this.getName());
+                return true;
+            });
+        }
+    }
+
+    // --- Destroy the bound whistle (if any) when this Chocobo dies ----------------------
+    @Override
+    public void die(@NonNull DamageSource damageSource) {
+        if (!level().isClientSide() && level() instanceof ServerLevel serverLevel) {
+            forEachBoundWhistle(serverLevel, (player, inventory, slot, whistle) -> {
+                inventory.removeItem(slot, whistle.getCount());
+                player.sendOverlayMessage(Component.translatable("message.seifchocoboriders.whistle_destroyed"));
+                return true;
+            });
+        }
+        super.die(damageSource);
+    }
+
+    private void forEachBoundWhistle(ServerLevel serverLevel, WhistleMatchHandler handler) {
+        UUID chocoboId = this.getUUID();
+        for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
+            Inventory inventory = serverPlayer.getInventory();
+            for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                ItemStack whistle = inventory.getItem(slot);
+                if (!whistle.is(ModItems.CHOCOBO_WHISTLE.get())) {
+                    continue;
+                }
+                UUID boundId = whistle.get(ModDataComponents.BOUND_CHOCOBO.get());
+                if (chocoboId.equals(boundId) && handler.handle(serverPlayer, inventory, slot, whistle)) {
+                    inventory.setChanged();
+                }
+            }
+        }
+    }
+
+    @FunctionalInterface
+    private interface WhistleMatchHandler {
+        /** @return true if the slot's contents changed and the inventory should be marked dirty */
+        boolean handle(ServerPlayer player, Inventory inventory, int slot, ItemStack whistle);
+    }
+
      // --- Identify the controlling passenger ------------------------------------
     @Override
     public @Nullable LivingEntity getControllingPassenger() {
@@ -474,22 +632,19 @@ public class ChocoboEntity extends TamableAnimal {
         return !isVehicle();
     }
 
-    // --- Eject rider if the Chocobo sits or dies ----------------------------------------
-    @Override
-    public void setOrderedToSit(boolean sit) {
-        super.setOrderedToSit(sit);
-        if (sit) ejectPassengers();
-    }
 
     @Override
-    public int getMaxHeadYRot() {
-        return 40;
+    public int getMaxHeadYRot() { return this.isInSittingPose() ? 40 : super.getMaxHeadYRot(); }
+
+    public int getMaxHeadXRot() {
+        return this.isInSittingPose() ? 20 : super.getMaxHeadXRot();
     }
 
     @Override
     public int getHeadRotSpeed() {
         return 15;
     }
+
 
     @Override
     public boolean isFood(@NonNull ItemStack itemStack) {
@@ -503,7 +658,7 @@ public class ChocoboEntity extends TamableAnimal {
 
     @Override
     public boolean shouldTryTeleportToOwner() {
-        return false; // Disables the teleport check entirely
+        return false;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -527,14 +682,7 @@ public class ChocoboEntity extends TamableAnimal {
             AttributeInstance instance = this.getAttribute(stat.attribute());
             if (instance == null) continue;
 
-            double total = 0.0;
-            int firstSlot = stat.ordinal() * ChocoboTrainingContainer.SLOTS_PER_STAT;
-            for (int i = firstSlot; i < firstSlot + ChocoboTrainingContainer.SLOTS_PER_STAT; i++) {
-                ItemStack stack = trainingContainer.getItem(i);
-                if (stack.getItem() instanceof ChocoboScrollTrainingItem feather) {
-                    total += stat.amountForLevel(feather.getLevel());
-                }
-            }
+            double total = trainingContainer.getTrainingValue(stat);
 
             instance.removeModifier(stat.modifierId());
             if (total > 0) {
@@ -555,7 +703,7 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     public boolean isGliding() {
-        return (Boolean)this.entityData.get(IS_GLIDING);
+        return this.entityData.get(IS_GLIDING);
     }
 
     protected void setGliding(boolean gliding) {
@@ -563,7 +711,7 @@ public class ChocoboEntity extends TamableAnimal {
         this.setNoGravity(gliding);
         if (!gliding) {
             this.setXRot(0.0F);
-            this.fallDistance = (double)0.0F;
+            this.fallDistance = 0.0F;
         }
     }
 

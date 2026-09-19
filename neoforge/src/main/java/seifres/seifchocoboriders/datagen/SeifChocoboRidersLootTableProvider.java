@@ -73,7 +73,7 @@ public class SeifChocoboRidersLootTableProvider extends LootTableProvider {
 
 
             dropSelf(ModBlocks.GYSAHL_GREENS_CRATE.block().get());
-
+            dropSelf(ModBlocks.GYSAHL_GREENS_BUNDLE.block().get());
         }
 
         @Override

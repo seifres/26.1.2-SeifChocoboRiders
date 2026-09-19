@@ -13,6 +13,8 @@ import net.neoforged.fml.event.IModBusEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import seifres.seifchocoboriders.entities.ChocoboEntity;
+import seifres.seifchocoboriders.init.ModEntityTypes;
+import seifres.seifchocoboriders.neoforge.loot.ModLootModifiers;
 import seifres.seifchocoboriders.network.ChocoboJumpPacket;
 import seifres.seifchocoboriders.network.NeoForgeNetwork;
 import seifres.seifchocoboriders.services.NeoForgeRegistryHelper;
@@ -33,6 +35,7 @@ public class SeifChocoboRiders {
         eventBus.addListener(NeoForgeNetwork::register);
         NeoForgeRegistryHelper.register(eventBus);
         NeoForgeChocoboVillagers.register(eventBus);
+        ModLootModifiers.register(eventBus);
 
 
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
@@ -47,6 +50,8 @@ public class SeifChocoboRiders {
                 event.put(entityType, builder.build());
             }
         });
+
+        ModEntityTypes.registerSpawnPlacements();
     }
 
     public static void flightInput(ServerPlayer player, ChocoboJumpPacket payload) {

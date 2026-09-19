@@ -18,22 +18,7 @@ public class SeifChocoboRidersEnglishLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         //Items
-        add(ModItems.CHOCOBO_WHISTLE_BLACK.get(), "Chocobo Whistle Black");
-        add(ModItems.CHOCOBO_WHISTLE_BLUE.get(), "Chocobo Whistle Blue");
-        add(ModItems.CHOCOBO_WHISTLE_BROWN.get(), "Chocobo Whistle Brown");
-        add(ModItems.CHOCOBO_WHISTLE_CYAN.get(), "Chocobo Whistle Cyan");
-        add(ModItems.CHOCOBO_WHISTLE_GRAY.get(), "Chocobo Whistle Gray");
-        add(ModItems.CHOCOBO_WHISTLE_GREEN.get(), "Chocobo Whistle Green");
-        add(ModItems.CHOCOBO_WHISTLE_LIGHT_BLUE.get(), "Chocobo Whistle Light Blue");
-        add(ModItems.CHOCOBO_WHISTLE_LIGHT_GRAY.get(), "Chocobo Whistle Light Gray");
-        add(ModItems.CHOCOBO_WHISTLE_LIME.get(), "Chocobo Whistle Lime");
-        add(ModItems.CHOCOBO_WHISTLE_MAGENTA.get(), "Chocobo Whistle Magenta");
-        add(ModItems.CHOCOBO_WHISTLE_ORANGE.get(), "Chocobo Whistle Orange");
-        add(ModItems.CHOCOBO_WHISTLE_PINK.get(), "Chocobo Whistle Pink");
-        add(ModItems.CHOCOBO_WHISTLE_PURPLE.get(), "Chocobo Whistle Purple");
-        add(ModItems.CHOCOBO_WHISTLE_RED.get(), "Chocobo Whistle Red");
-        add(ModItems.CHOCOBO_WHISTLE_WHITE.get(), "Chocobo Whistle White");
-        add(ModItems.CHOCOBO_WHISTLE_YELLOW.get(), "Chocobo Whistle Yellow");
+        add(ModItems.CHOCOBO_WHISTLE.get(), "Chocobo Whistle");
         add(ModItems.GYSAHL_GREENS_SEED.get(), "Gysahl Greens Seed");
         add(ModItems.GYSAHL_GREENS.get(), "Gysahl Greens");
 
@@ -49,6 +34,8 @@ public class SeifChocoboRidersEnglishLanguageProvider extends LanguageProvider {
         add(ModBlocks.GYSAHL_GREENS_CRATE.block().get(), "Gysahl Greens Crate");
         add(ModBlocks.GYSAHL_GREENS_CRATE.item().get(), "Gysahl Greens Crate");
         add(ModBlocks.GYSAHL_GREENS_CROP.item().get(),"Gysahl Greens Crop");
+        add(ModBlocks.GYSAHL_GREENS_BUNDLE.block().get(), "Gysahl Greens Bundle");
+        add(ModBlocks.GYSAHL_GREENS_BUNDLE.item().get(), "Gysahl Greens Bundle");
 
         //Entities
         add(ModEntityTypes.CHOCOBO_ENTITY.get(), "Chocobo Entity");
@@ -64,7 +51,23 @@ public class SeifChocoboRidersEnglishLanguageProvider extends LanguageProvider {
         add("stat.seifchocoboriders.jump_strength", "Jump Strength");
         add("stat.seifchocoboriders.max_health", "Max Health");
         add("stat.seifchocoboriders.flap_capacity", "Flap Stamina");
+        add("stat.seifchocoboriders.attack_damage", "Attack Damage");
+        add("stat.seifchocoboriders.attack_speed", "Attack Speed");
+        add("stat.seifchocoboriders.attack_knockback", "Knockback");
+        add("stat.seifchocoboriders.armor", "Armor");
+        add("stat.seifchocoboriders.armor_toughness", "Toughness");
+        add("gui.seifchocoboriders.train", "Train");
 
+        //Creative Tabs
+        add("itemGroup.seifchocoboriders.chocobo_riders", "Chocobo Riders");
+
+        //Chocobo Whistle messages
+        add("message.seifchocoboriders.whistle_bound", "Whistle bound to your Chocobo!");
+        add("message.seifchocoboriders.whistle_already_bound", "This whistle is already bound to a Chocobo.");
+        add("message.seifchocoboriders.whistle_not_trained", "You can only bind a whistle to a Chocobo you've trained.");
+        add("message.seifchocoboriders.whistle_unbound", "This whistle isn't bound to a Chocobo yet.");
+        add("message.seifchocoboriders.whistle_no_chocobo", "Your Chocobo couldn't be found.");
+        add("message.seifchocoboriders.whistle_destroyed", "Your Chocobo Whistle shattered - its bound Chocobo has died.");
     }
 
 

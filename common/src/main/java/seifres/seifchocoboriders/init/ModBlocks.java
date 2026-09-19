@@ -2,8 +2,8 @@ package seifres.seifchocoboriders.init;
 
 
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import seifres.seifchocoboriders.block.GysahlGreensCrop;
@@ -19,12 +19,16 @@ public final class ModBlocks {
     public static final BlockwithItemRegistryHandle<Block> GYSAHL_GREENS_CRATE =
             Services.REGISTRY.registerBlockWithItem(
                     "gysahl_greens_crate", properties -> new Block(properties.mapColor(MapColor.PLANT).destroyTime(1.0F)),
-                    ((block, properties) -> new BlockItem(block, properties.stacksTo(1))));
+                    ((block, properties) -> new BlockItem(block, properties.stacksTo(32))));
 
     public static final BlockwithItemRegistryHandle<GysahlGreensCrop> GYSAHL_GREENS_CROP =
             Services.REGISTRY.registerBlockWithItem(
                     "gysahl_greens_crop",
                     properties -> new GysahlGreensCrop(properties.noCollision().randomTicks().instabreak().sound(SoundType.CROP)));
 
-
+    public static final BlockwithItemRegistryHandle<SlabBlock> GYSAHL_GREENS_BUNDLE =
+            Services.REGISTRY.registerBlockWithItem(
+                    "gysahl_greens_bundle",
+                    properties -> new SlabBlock(properties.mapColor(MapColor.PLANT).strength(1.0F)),
+                    (block, properties) -> new BlockItem(block, properties.stacksTo(32)));
 }

@@ -17,6 +17,8 @@ import seifres.seifchocoboriders.entities.ChocoboEntity;
 import seifres.seifchocoboriders.entities.ChocoboTrainingScreen;
 import seifres.seifchocoboriders.init.ModMenus;
 import seifres.seifchocoboriders.network.ChocoboJumpPacket;
+import seifres.seifchocoboriders.network.PacketHandler;
+import seifres.seifchocoboriders.services.NeoForgePacketHandler;
 import seifres.seifchocoboriders.services.ServicesClient;
 import seifres.seifchocoboriders.sounds.NeoForgeModSounds;
 
@@ -36,6 +38,8 @@ public final class SeifChocoboRidersClient {
 
         NeoForgeModSounds.SOUND_EVENTS.register(eventBus); // register to bus
         NeoForgeModSounds.init();
+
+        PacketHandler.register(new NeoForgePacketHandler());
     }
 
     @SubscribeEvent

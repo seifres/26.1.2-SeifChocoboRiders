@@ -1,8 +1,10 @@
 package seifres.seifchocoboriders.services;
 
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -15,7 +17,9 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import seifres.seifchocoboriders.Constants;
@@ -24,11 +28,28 @@ import seifres.seifchocoboriders.network.ChocoboEntityIdPayload;
 import seifres.seifchocoboriders.services.types.IRegistryHelper;
 import seifres.seifchocoboriders.services.util.RegistryHandle;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class FabricRegistryHelper implements IRegistryHelper {
+
+    @Override
+    public <T> RegistryHandle<DataComponentType<T>> registerDataComponent(String name,
+                                                                          UnaryOperator<DataComponentType.Builder<T>> builder) {
+        ResourceKey<DataComponentType<?>> key = IRegistryHelper.dataComponentKey(name);
+        Identifier id = key.identifier();
+        DataComponentType<T> registered = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id,
+                builder.apply(DataComponentType.builder()).build());
+        return new RegistryHandle<DataComponentType<T>>() {
+            @Override
+            public Identifier id() { return id; }
+            @Override
+            public DataComponentType<T> get() { return registered; }
+        };
+    }
 
     @Override
     public <T extends Block> RegistryHandle<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> block) {
@@ -126,6 +147,30 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
             @Override
             public MenuType<T> get() {
+                return registered;
+            }
+        };
+    }
+
+    @Override
+    public RegistryHandle<CreativeModeTab> registerCreativeTab(String name, UnaryOperator<CreativeModeTab.Builder> builder,
+                                                                 List<? extends RegistryHandle<? extends ItemLike>> items) {
+        ResourceKey<CreativeModeTab> key = IRegistryHelper.creativeTabKey(name);
+        Identifier id = key.identifier();
+        CreativeModeTab.Builder tabBuilder = builder.apply(FabricItemGroup.builder())
+                .displayItems((params, output) -> {
+                    for (RegistryHandle<? extends ItemLike> item : items) {
+                        output.accept(item.get());
+                    }
+                });
+        CreativeModeTab registered = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, id, tabBuilder.build());
+        return new RegistryHandle<CreativeModeTab>() {
+            @Override
+            public Identifier id() {
+                return id;
+            }
+            @Override
+            public CreativeModeTab get() {
                 return registered;
             }
         };

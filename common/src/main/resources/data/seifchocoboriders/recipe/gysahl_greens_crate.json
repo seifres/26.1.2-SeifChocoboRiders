@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    "BBB",
+    "PPP"
+  ],
+  "key": {
+    "B": "seifchocoboriders:gysahl_greens_bundle",
+    "P": "minecraft:planks"
+  },
+  "result": {
+    "id": "seifchocoboriders:gysahl_greens_crate",
+    "count": 1
+  }
+}

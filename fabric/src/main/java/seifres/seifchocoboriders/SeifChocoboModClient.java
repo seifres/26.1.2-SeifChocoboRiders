@@ -5,6 +5,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import seifres.seifchocoboriders.network.FabricNetwork;
+import seifres.seifchocoboriders.network.PacketHandler;
+import seifres.seifchocoboriders.services.FabricPacketHandler;
 import seifres.seifchocoboriders.services.ServicesClient;
 import seifres.seifchocoboriders.services.client.FabricClientSetup;
 
@@ -18,5 +21,8 @@ public class SeifChocoboModClient implements ClientModInitializer {
                 Supplier<LayerDefinition> supplier) -> ModelLayerRegistry.registerModelLayer(location, supplier::get));
         ServicesClient.CLIENT_REGISTRY.applyEntityRendererRegistrations(EntityRenderers::register);
         FabricClientSetup.init();
+
+        PacketHandler.register(new FabricPacketHandler());
+        FabricNetwork.registerClientReceiver();
     }
 }

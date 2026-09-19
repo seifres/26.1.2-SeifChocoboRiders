@@ -34,6 +34,8 @@ public class CommonClass {
         ModItems.load();
         ModAttributes.load();
         ModMenus.load();
+        ModDataComponents.load();
+        ModCreativeTabs.load();
 
 
         ModEntityAttributes.load();

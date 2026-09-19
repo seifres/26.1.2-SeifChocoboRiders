@@ -10,7 +10,7 @@ public final class ModAttributes {
     public static final RegistryHandle<RangedAttribute> CHOCOBO_FLIGHT_SPEED = Services.REGISTRY.registerAttribute(
             "flight_speed",
             () -> {
-                RangedAttribute attribute = new RangedAttribute("attribute.name.chocobo.flight_speed", 0.05D, 0.0D, 2.0D);
+                RangedAttribute attribute = new RangedAttribute("attribute.name.chocobo.flight_speed", 0.02D, 0.0D, 1.0D);
                 attribute.setSyncable(true);
                 return attribute;
             }
@@ -26,6 +26,5 @@ public final class ModAttributes {
     );
 
     public static void load() {
-        // triggers static init above; mirrors your ModBlocks/ModItems load() pattern
     }
 }

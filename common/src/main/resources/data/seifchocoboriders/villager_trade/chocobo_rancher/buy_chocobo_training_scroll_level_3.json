@@ -1,0 +1,14 @@
+{
+  "gives": {
+    "count": 1,
+    "id": "seifchocoboriders:chocobo_training_scroll_level_3"
+  },
+
+  "max_uses": 10,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 48,
+    "id": "seifchocoboriders:gysahl_greens_bundle"
+  },
+  "xp": 2
+}

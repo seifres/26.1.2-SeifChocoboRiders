@@ -1,20 +1,17 @@
 package seifres.seifchocoboriders.client.model;// Made with Blockbench 5.1.4
-// Exported for Minecraft version 1.17 or later with Mojang mappings
-// Paste this class into your mod and generate all required imports
-
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import org.jspecify.annotations.NonNull;
 import seifres.seifchocoboriders.Constants;
 import seifres.seifchocoboriders.client.renderer.ChocoboRendererState;
 
 public class ChocoboEntityModel extends EntityModel<ChocoboRendererState> {
+
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Constants.id( "chocoboentity"), "main");
 	private final ModelPart main;
@@ -207,94 +204,99 @@ public class ChocoboEntityModel extends EntityModel<ChocoboRendererState> {
 
 		PartDefinition cube_r43 = feather10.addOrReplaceChild("cube_r43", CubeListBuilder.create().texOffs(54, 75).addBox(-6.0F, -1.0F, -1.0F, 7.0F, 1.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.3054F));
 
-		PartDefinition neck = main.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(42, 68).addBox(-2.5F, -8.5F, -1.0F, 4.0F, 10.0F, 2.0F, new CubeDeformation(0.0F))
-				.texOffs(72, 84).addBox(-2.0F, -8.0F, 1.0F, 3.0F, 10.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(14, 86).addBox(-1.0F, -8.0F, 2.0F, 1.0F, 10.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(62, 86).addBox(-1.0F, -8.0F, -3.0F, 1.0F, 10.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(80, 84).addBox(-2.0F, -8.0F, -2.0F, 3.0F, 10.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(4.5F, -19.5F, 0.0F));
+		PartDefinition neck = main.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(42, 68).addBox(-2.5F, -6.5F, -1.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(72, 84).addBox(-2.0F, -6.0F, 1.0F, 3.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(14, 86).addBox(-1.0F, -6.0F, 2.0F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(62, 86).addBox(-1.0F, -6.0F, -3.0F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(80, 84).addBox(-2.0F, -6.0F, -2.0F, 3.0F, 8.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(4.5F, -19.5F, 0.0F));
 
-		PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(42, 20).addBox(-3.7413F, -2.9235F, -3.9941F, 6.0F, 6.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(1.2413F, -10.5765F, -0.0059F));
+		PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(42, 20).addBox(-3.7413F, 0.0765F, -3.9941F, 6.0F, 6.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(1.2413F, -10.5765F, -0.0059F));
 
-		PartDefinition beak = head.addOrReplaceChild("beak", CubeListBuilder.create().texOffs(66, 86).addBox(0.7894F, -1.4318F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
-				.texOffs(84, 56).addBox(-1.2106F, -1.4318F, -2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.4694F, 1.5083F, 0.0059F));
+		PartDefinition beak = head.addOrReplaceChild("beak", CubeListBuilder.create().texOffs(66, 86).addBox(0.7894F, 1.5682F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(84, 56).addBox(-1.2106F, 1.5682F, -2.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.4694F, 1.5083F, 0.0059F));
 
-		PartDefinition cube_r44 = beak.addOrReplaceChild("cube_r44", CubeListBuilder.create().texOffs(0, 86).addBox(-3.5F, -1.0F, -1.0F, 5.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.2106F, 1.5682F, 0.0F, 0.0F, 0.0F, 0.2182F));
+		PartDefinition cube_r44 = beak.addOrReplaceChild("cube_r44", CubeListBuilder.create().texOffs(0, 86).addBox(-3.5F, 2.0F, -1.0F, 5.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.2106F, 1.5682F, 0.0F, 0.0F, 0.0F, 0.2182F));
 
 		PartDefinition crest = head.addOrReplaceChild("crest", CubeListBuilder.create(), PartPose.offset(-2.7281F, -1.5847F, -0.0118F));
 
-		PartDefinition cube_r45 = crest.addOrReplaceChild("cube_r45", CubeListBuilder.create().texOffs(0, 83).addBox(-7.0F, -2.0F, -1.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, 1.6611F, 4.0177F, 0.0F, 0.1745F, -0.6109F));
+		PartDefinition cube_r45 = crest.addOrReplaceChild("cube_r45", CubeListBuilder.create().texOffs(0, 83).addBox(-7.0F, -3.0F, -1.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, 5.6611F, 4.0177F, 0.0F, 0.1745F, -0.6109F));
 
-		PartDefinition cube_r46 = crest.addOrReplaceChild("cube_r46", CubeListBuilder.create().texOffs(54, 83).addBox(-7.0F, -2.0F, -1.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, 1.6611F, -2.9823F, -0.0436F, -0.2618F, -0.6109F));
+		PartDefinition cube_r46 = crest.addOrReplaceChild("cube_r46", CubeListBuilder.create().texOffs(54, 83).addBox(-7.0F, -3.0F, -1.0F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, 5.6611F, -2.9823F, -0.0436F, -0.2618F, -0.6109F));
 
-		PartDefinition cube_r47 = crest.addOrReplaceChild("cube_r47", CubeListBuilder.create().texOffs(86, 53).addBox(-4.0F, -2.0F, -1.0F, 5.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 0.6611F, -2.9823F, -0.0436F, -0.2618F, -0.6109F));
+		PartDefinition cube_r47 = crest.addOrReplaceChild("cube_r47", CubeListBuilder.create().texOffs(86, 53).addBox(-4.0F, -3.0F, -1.0F, 5.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 4.6611F, -2.9823F, -0.0436F, -0.2618F, -0.6109F));
 
-		PartDefinition cube_r48 = crest.addOrReplaceChild("cube_r48", CubeListBuilder.create().texOffs(0, 89).addBox(-4.0F, -2.0F, -1.0F, 5.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 0.6611F, 4.0177F, 0.0436F, 0.2182F, -0.4363F));
+		PartDefinition cube_r48 = crest.addOrReplaceChild("cube_r48", CubeListBuilder.create().texOffs(0, 89).addBox(-4.0F, -3.0F, -1.0F, 5.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 4.6611F, 4.0177F, 0.0436F, 0.2182F, -0.4363F));
 
-		PartDefinition cube_r49 = crest.addOrReplaceChild("cube_r49", CubeListBuilder.create().texOffs(20, 68).addBox(-9.0F, -1.0F, -0.5F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, -0.3389F, 2.0177F, 0.0436F, 0.1745F, 0.3054F));
+		PartDefinition cube_r49 = crest.addOrReplaceChild("cube_r49", CubeListBuilder.create().texOffs(20, 68).addBox(-9.0F, -2.0F, -0.5F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9868F, 4.6611F, 2.0177F, 0.0436F, 0.1745F, 0.3054F));
 
-		PartDefinition cube_r50 = crest.addOrReplaceChild("cube_r50", CubeListBuilder.create().texOffs(70, 10).addBox(-7.75F, -1.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, -0.3389F, -2.9823F, -0.1309F, -0.2182F, 0.3054F));
+		PartDefinition cube_r50 = crest.addOrReplaceChild("cube_r50", CubeListBuilder.create().texOffs(70, 10).addBox(-7.75F, -2.0F, 0.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 3.6611F, -2.9823F, -0.1309F, -0.2182F, 0.3054F));
 
-		PartDefinition cube_r51 = crest.addOrReplaceChild("cube_r51", CubeListBuilder.create().texOffs(70, 13).addBox(-8.5F, -1.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, -0.3389F, 0.0177F, 0.0F, -0.0436F, 0.6545F));
+		PartDefinition cube_r51 = crest.addOrReplaceChild("cube_r51", CubeListBuilder.create().texOffs(70, 13).addBox(-8.5F, -2.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 4.6611F, 0.0177F, 0.0F, -0.0436F, 0.6545F));
 
-		PartDefinition cube_r52 = crest.addOrReplaceChild("cube_r52", CubeListBuilder.create().texOffs(34, 84).addBox(-5.0F, -1.0F, -1.0F, 6.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 2.6611F, 1.0177F, 0.0F, -0.0436F, 0.3054F));
+		PartDefinition cube_r52 = crest.addOrReplaceChild("cube_r52", CubeListBuilder.create().texOffs(34, 84).addBox(-5.0F, -2.0F, -1.0F, 6.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.9868F, 6.6611F, 1.0177F, 0.0F, -0.0436F, 0.3054F));
 
-		PartDefinition cube_r53 = crest.addOrReplaceChild("cube_r53", CubeListBuilder.create().texOffs(70, 23).addBox(-8.0F, -1.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 2.6611F, -0.9823F, 0.0F, -0.0436F, 0.4363F));
+		PartDefinition cube_r53 = crest.addOrReplaceChild("cube_r53", CubeListBuilder.create().texOffs(70, 23).addBox(-8.0F, -2.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 6.6611F, -0.9823F, 0.0F, -0.0436F, 0.4363F));
 
-		PartDefinition cube_r54 = crest.addOrReplaceChild("cube_r54", CubeListBuilder.create().texOffs(70, 20).addBox(-8.0F, -1.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 0.6611F, 1.0177F, 0.0F, -0.0436F, 0.4363F));
+		PartDefinition cube_r54 = crest.addOrReplaceChild("cube_r54", CubeListBuilder.create().texOffs(70, 20).addBox(-8.0F, -2.0F, -1.0F, 9.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.9868F, 4.6611F, 1.0177F, 0.0F, -0.0436F, 0.4363F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
-	@Override
 	public void setupAnim(@NonNull ChocoboRendererState state) {
 		super.setupAnim(state);
 
 		// --- Head Looking ------
-		this.head.xRot = state.xRot * (float) (Math.PI / 180.0);
-		this.head.yRot = state.yRot * (float) (Math.PI / 180.0);
+		this.neck.xRot = state.xRot * (float) (Math.PI / 180.0);
+		this.neck.yRot = state.yRot * (float) (Math.PI / 180.0);
 
 		// --- Is Sitting ------
 		if (state.isSitting) {
+			this.wing_left.xRot = 0.0F;
+			this.wing_right.xRot = 0.0F;
 			this.body.yRot = 0.0F;
 			this.body.xRot = 0.0F;
+			this.body.setPos(0.0F, 0.0F, 0.0F);
 
 			this.leg_left.xRot = 1.2F;   // bent forward
 			this.leg_right.xRot = 1.2F;
 			this.wing_left.zRot = -0.3F; // tuck wings slightly
 			this.wing_right.zRot = 0.3F;
 
-			this.main.y += 8.0F;  // Lower entire entity to ground
+			this.main.y = 24.0F + 9.0F;  // Lower entire entity to ground
+
 			return;
 		}
 
 		// Flight pose
 		if (state.isGliding) {
-			// Tuck legs up
 			this.leg_left.xRot  = -0.8F;
 			this.leg_right.xRot = -0.8F;
 
-			// Spread and flap wings using animation speed/strength from entity
 			float flapAngle = Mth.sin(state.wingAnimationSpeed) * state.wingAnimationStrength * 1.2F;
 			this.wing_left.xRot  = 0.6F + flapAngle;
 			this.wing_right.xRot = -0.6F - flapAngle;
 
-			// Tilt tail up slightly
-			//this.tail.xRot = 0.0F;
 			this.tail.zRot = 0.3F;
 			return;
 		}
 
+		if(!state.isSitting) {
+			// Walk animation — only when grounded
+			this.wing_left.xRot = 0.0F;
+			this.wing_right.xRot = 0.0F;
 
-		// Walk animation — only when grounded
-		float walk = state.walkAnimationPos;
-		float speed = state.walkAnimationSpeed;
-		this.leg_left.xRot   = Mth.cos(walk * 0.6662F) * 1.4F * speed;
-		this.leg_right.xRot  = Mth.cos(walk * 0.6662F + (float) Math.PI) * 1.4F * speed;
-		this.wing_right.zRot = Mth.cos(walk * 0.6662F) * .25F * speed;
-		this.wing_left.zRot  = Mth.cos(walk * 0.6662F + (float) Math.PI) * .25F * speed;
-		this.tail.yRot       = Mth.cos(walk * 0.6662F) * .60F * speed;
-		this.tail.xRot       = 0.0F;
+			float walk = state.walkAnimationPos;
+			float rawSpeed = state.walkAnimationSpeed;
+			float speed = rawSpeed > 0.02F ? Mth.clamp(rawSpeed, 0.55F, 1.0F) : 0.0F;
+			float stride = speed * 2 < 1.4F ? Mth.clamp(speed * 2, .5F, 1.4F) : 1.4F;
 
+			this.leg_left.xRot = Mth.cos(walk * 0.6662F ) * stride * speed;
+			this.leg_right.xRot = Mth.cos(walk * 0.6662F + (float) Math.PI) * stride * speed;
+			this.wing_right.zRot = Mth.cos(walk * 0.6662F) * .25F * speed;
+			this.wing_left.zRot = Mth.cos(walk * 0.6662F + (float) Math.PI) * .25F * speed;
+			this.tail.yRot = Mth.cos(walk * 0.6662F) * .60F * speed;
+			this.tail.xRot = 0.0F;
+		}
 
 	}
 }

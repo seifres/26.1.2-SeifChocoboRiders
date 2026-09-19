@@ -9,7 +9,7 @@ import org.lwjgl.system.ffm.mapping.Mapping;
 import seifres.seifchocoboriders.Constants;
 
 public record ChocoboEntityIdPayload(int integer) implements CustomPacketPayload {
-    public static final Type<ChocoboEntityIdPayload> TYPE = new Type<>(Constants.id("Chocobo_entity_id_payload"));
+    public static final Type<ChocoboEntityIdPayload> TYPE = new Type<>(Constants.id("chocobo_entity_id_payload"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChocoboEntityIdPayload> STREAM_CODEC;
 
