@@ -1,0 +1,125 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_black"
+        },
+        "when": "black"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_blue"
+        },
+        "when": "blue"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_brown"
+        },
+        "when": "brown"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_cyan"
+        },
+        "when": "cyan"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_gray"
+        },
+        "when": "gray"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_green"
+        },
+        "when": "green"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_light_blue"
+        },
+        "when": "lightblue"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_light_gray"
+        },
+        "when": "lightgray"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_lime"
+        },
+        "when": "lime"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_magenta"
+        },
+        "when": "magenta"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_orange"
+        },
+        "when": "orange"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_pink"
+        },
+        "when": "pink"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_purple"
+        },
+        "when": "purple"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_red"
+        },
+        "when": "red"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_white"
+        },
+        "when": "white"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "seifchocoboriders:item/chocobo_whistle_yellow"
+        },
+        "when": "yellow"
+      }
+    ],
+    "component": "seifchocoboriders:whistle_color",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "seifchocoboriders:item/chocobo_whistle_yellow"
+    },
+    "property": "minecraft:component"
+  }
+}

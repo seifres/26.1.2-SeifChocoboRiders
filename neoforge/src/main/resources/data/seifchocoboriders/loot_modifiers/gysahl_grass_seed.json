@@ -1,0 +1,9 @@
+{
+  "type": "seifchocoboriders:gysahl_grass_seed",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/short_grass"
+    }
+  ]
+}

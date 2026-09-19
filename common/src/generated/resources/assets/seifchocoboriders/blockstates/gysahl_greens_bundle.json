@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "seifchocoboriders:block/gysahl_greens_bundle_bottom"
+    },
+    "type=double": {
+      "model": "seifchocoboriders:block/gysahl_greens_bundle"
+    },
+    "type=top": {
+      "model": "seifchocoboriders:block/gysahl_greens_bundle_top"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "seifchocoboriders:block/template_column_slab_bottom",
+  "textures": {
+    "end": "seifchocoboriders:block/gysahl_greens_bundle_top",
+    "side": "seifchocoboriders:block/gysahl_greens_bundle_side"
+  }
+}
