@@ -113,11 +113,6 @@ public class ChocoboTrainingScreen extends AbstractContainerScreen<ChocoboTraini
             int nameY = (int) (rowTop / TEXT_SCALE);
             graphics.text(this.font, nameText, nameX, nameY, -12566464, false);
 
-            // Base attribute value isn't pushed through a DataSlot - LivingEntity attributes are
-            // already kept in sync to tracking clients automatically (vanilla's own
-            // ClientboundUpdateAttributesPacket), so read it straight off the client-side entity.
-            // This is only used for the spawn-percentile arrow below, which reflects the
-            // chocobo's fixed innate stat and isn't affected by the training-sync issue.
             AttributeInstance attributeInstance = chocobo.getAttribute(stats[i].attribute());
             double baseValue = attributeInstance != null ? attributeInstance.getBaseValue() : 0.0;
             double range = stats[i].spawnMax() - stats[i].spawnMin();

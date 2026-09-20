@@ -1,19 +1,16 @@
 package seifres.seifchocoboriders.services;
 
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -27,11 +24,11 @@ import seifres.seifchocoboriders.entities.ChocoboTrainingMenu;
 import seifres.seifchocoboriders.network.ChocoboEntityIdPayload;
 import seifres.seifchocoboriders.services.types.IRegistryHelper;
 import seifres.seifchocoboriders.services.util.RegistryHandle;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class FabricRegistryHelper implements IRegistryHelper {
@@ -43,11 +40,16 @@ public class FabricRegistryHelper implements IRegistryHelper {
         Identifier id = key.identifier();
         DataComponentType<T> registered = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id,
                 builder.apply(DataComponentType.builder()).build());
-        return new RegistryHandle<DataComponentType<T>>() {
+        return new RegistryHandle<>() {
             @Override
-            public Identifier id() { return id; }
+            public Identifier id() {
+                return id;
+            }
+
             @Override
-            public DataComponentType<T> get() { return registered; }
+            public DataComponentType<T> get() {
+                return registered;
+            }
         };
     }
 
@@ -157,7 +159,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
                                                                  List<? extends RegistryHandle<? extends ItemLike>> items) {
         ResourceKey<CreativeModeTab> key = IRegistryHelper.creativeTabKey(name);
         Identifier id = key.identifier();
-        CreativeModeTab.Builder tabBuilder = builder.apply(FabricItemGroup.builder())
+        CreativeModeTab.Builder tabBuilder = builder.apply(FabricCreativeModeTab.builder())
                 .displayItems((params, output) -> {
                     for (RegistryHandle<? extends ItemLike> item : items) {
                         output.accept(item.get());

@@ -682,11 +682,30 @@ public class ChocoboEntity extends TamableAnimal {
             AttributeInstance instance = this.getAttribute(stat.attribute());
             if (instance == null) continue;
 
+            boolean isMaxHealth = stat == ChocoboStat.MAX_HEALTH;
+            double oldMax = isMaxHealth ? this.getMaxHealth() : 0.0;
+
             double total = trainingContainer.getTrainingValue(stat);
 
             instance.removeModifier(stat.modifierId());
             if (total > 0) {
                 instance.addPermanentModifier(new AttributeModifier(stat.modifierId(), total, AttributeModifier.Operation.ADD_VALUE));
+            }
+
+            // Raising MAX_HEALTH via a modifier only grows the bar - vanilla never
+            // touches current health to match, so a trained Chocobo looked "stuck"
+            // damaged relative to its new, bigger max. Carry current health up by
+            // whatever the cap just grew by, so training also heals accordingly.
+            // (Only fires when the cap actually changed, so re-running this on load
+            // or on an unrelated stat's training is a no-op.)
+            if (isMaxHealth) {
+                double newMax = this.getMaxHealth();
+                double delta = newMax - oldMax;
+                if (delta > 0) {
+                    this.setHealth((float) Math.min(newMax, this.getHealth() + delta));
+                } else if (delta < 0) {
+                    this.setHealth((float) Math.min(this.getHealth(), newMax));
+                }
             }
         }
     }
@@ -713,6 +732,22 @@ public class ChocoboEntity extends TamableAnimal {
             this.setXRot(0.0F);
             this.fallDistance = 0.0F;
         }
+    }
+
+    /**
+     * Vanilla's own fall-damage propagation (Entity#propagateFallToPassengers) hands every
+     * passenger the vehicle's raw, un-reduced fall distance - it never checks the vehicle's
+     * own SAFE_FALL_DISTANCE attribute before doing so. That means our chocobo's very high
+     * SAFE_FALL_DISTANCE (see createAttributes()) only ever protected the chocobo itself;
+     * the rider still took full fall damage computed against their own, much lower, fall
+     * tolerance whenever the chocobo picked up real fall distance on the way down (e.g. a
+     * steep dive right before touching down). Since the chocobo is the one absorbing the
+     * landing, the rider shouldn't take damage from it either - so we suppress propagation
+     * entirely rather than passing the raw distance through.
+     */
+    @Override
+    protected void propagateFallToPassengers(double fallDistance, float damageModifier, DamageSource damageSource) {
+        // no-op: the chocobo takes the landing for its rider, so the rider takes nothing.
     }
 
     public boolean isOwnedBy(@NonNull LivingEntity entity) {

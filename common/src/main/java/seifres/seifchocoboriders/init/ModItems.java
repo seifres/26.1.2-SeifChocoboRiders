@@ -1,6 +1,5 @@
 package seifres.seifchocoboriders.init;
 
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import seifres.seifchocoboriders.entities.ChocoboVariant;
 import seifres.seifchocoboriders.items.ChocoboScrollTrainingItem;

@@ -12,7 +12,6 @@ public final class ModMenus {
             Services.REGISTRY.registerEntityMenuType("chocobo_training", ChocoboTrainingMenu.class);
 
     public static void load() {
-        // triggers static init
     }
 
 

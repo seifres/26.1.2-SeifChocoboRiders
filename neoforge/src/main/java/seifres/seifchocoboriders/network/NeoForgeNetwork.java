@@ -42,11 +42,6 @@ public class NeoForgeNetwork {
 
     }
 
-    // Client -> server: a training screen asking for a fresh snapshot. Look up the sender's
-    // currently open menu (must actually be a ChocoboTrainingMenu with a matching containerId,
-    // same guard vanilla itself uses for e.g. handleContainerButtonClick), build the response
-    // server-side (server-authoritative level + already-clamped attribute value), and send it
-    // straight back to that player.
     private static void handleTrainingDataRequest(final ChocoboTrainingDataRequestPayload payload, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player() instanceof ServerPlayer player
@@ -57,8 +52,6 @@ public class NeoForgeNetwork {
         });
     }
 
-    // Server -> client: apply the snapshot to the client's own open menu instance, guarded the
-    // same way (still the right menu open, in case the screen closed/changed mid-flight).
     private static void handleTrainingDataResponse(final ChocoboTrainingDataPayload payload, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player().containerMenu instanceof ChocoboTrainingMenu menu

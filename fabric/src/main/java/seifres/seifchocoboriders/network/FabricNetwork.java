@@ -29,9 +29,6 @@ public class FabricNetwork {
             }
         });
 
-        // Codec registration only (safe on both sides) - the actual clientbound receiver for
-        // ChocoboTrainingDataPayload is registered separately in registerClientReceiver(),
-        // since ClientPlayNetworking is a client-only Fabric API class.
         PayloadTypeRegistry.serverboundPlay().register(
                 ChocoboTrainingDataRequestPayload.TYPE,
                 ChocoboTrainingDataRequestPayload.STREAM_CODEC

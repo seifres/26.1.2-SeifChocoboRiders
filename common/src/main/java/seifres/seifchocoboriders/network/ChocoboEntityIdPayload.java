@@ -1,11 +1,9 @@
 package seifres.seifchocoboriders.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.lwjgl.system.ffm.mapping.Mapping;
 import seifres.seifchocoboriders.Constants;
 
 public record ChocoboEntityIdPayload(int integer) implements CustomPacketPayload {

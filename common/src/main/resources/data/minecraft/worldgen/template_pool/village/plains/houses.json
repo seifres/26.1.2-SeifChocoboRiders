@@ -335,7 +335,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "seifchocoboriders:chocobo_trainer_hut",
+        "location": "seifchocoboriders:chocobo_trainer_hut_plains",
         "processors": "minecraft:mossify_10_percent",
         "projection": "rigid"
       },

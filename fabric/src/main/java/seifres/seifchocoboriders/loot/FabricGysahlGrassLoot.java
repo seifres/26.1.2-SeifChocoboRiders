@@ -17,16 +17,6 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import seifres.seifchocoboriders.init.ModItems;
 
-// Fabric counterpart to the NeoForge side's GysahlGrassSeedLootModifier (a Global Loot Modifier).
-// Fabric API's LootTableEvents.MODIFY fires once per loot table as it's *being built*, after
-// vanilla's own JSON (and any other datapack's override of it) has already been merged in, and
-// lets us append an extra pool rather than replace the table outright - so this composes with
-// whatever else is touching short_grass instead of clobbering it.
-//
-// NOTE: unverified against this project's actual Fabric/Fabric-API classpath - loot builder API
-// shapes (LootPool/LootItem/ApplyBonusCount, and the enchantment-as-registry-Holder plumbing in
-// particular) have moved around release to release. If this doesn't compile as-is, paste the
-// error and we'll adjust, same as we did for the SpawnPlacements fix.
 public final class FabricGysahlGrassLoot {
     private static final ResourceKey<LootTable> SHORT_GRASS =
             ResourceKey.create(Registries.LOOT_TABLE, Identifier.withDefaultNamespace("blocks/short_grass"));

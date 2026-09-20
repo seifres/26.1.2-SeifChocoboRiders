@@ -15,33 +15,6 @@ public class ChocoboTrainingMenu extends AbstractContainerMenu {
     private final ChocoboTrainingContainer trainingContainer;
     private final ChocoboEntity entity;
 
-    // Deliberately no DataSlots here for exp/level/base value. A DataSlot version of this
-    // (synced via level, which safely fits the packet's signed-16-bit-short wire format -
-    // see the earlier fix on the raw-exp/scaled-base-value version) still never delivered
-    // updates to the client after the very first full-state push, even though item slot
-    // changes (the scroll being consumed) synced correctly through the very same
-    // broadcastChanges() call. Root cause wasn't pinned down (likely something specific to
-    // how this loader's extra-data menu-opening wires the ContainerSynchronizer), but rather
-    // than keep chasing it, this reuses a sync path that's already proven reliable in this
-    // project: ChocoboEntity.recalculateTrainingBonuses() applies each stat's training bonus
-    // as a real, permanent AttributeModifier (see ChocoboStat#modifierId) on the entity's own
-    // AttributeInstance, and LivingEntity attributes - base value AND their modifiers - are
-    // kept in sync to tracking clients automatically by vanilla's own
-    // ClientboundUpdateAttributesPacket. So the Screen just reads the modifier straight off
-    // the client-side ChocoboEntity and derives the level back out of it - no custom sync
-    // needed at all.
-    //
-    // ...except that vanilla push turned out to be unreliable on at least one real dedicated
-    // server (numbers/level would sit at their default value indefinitely - even after
-    // waiting several minutes - and only ever refresh in response to a click, i.e. a genuine
-    // request/response round trip). Rather than keep chasing vanilla's proactive-push timing
-    // on that setup, the screen now also actively pulls a fresh snapshot via
-    // ChocoboTrainingDataRequestPayload / ChocoboTrainingDataPayload (see PacketHandler /
-    // ChocoboTrainingScreen#containerTick), using the exact same request-response pattern
-    // that's always worked reliably here (e.g. the Train button). syncedLevels/syncedValues
-    // below hold the latest snapshot received that way; the live attribute-modifier read is
-    // kept only as a fallback for the brief window before the first response arrives.
-
     private int[] syncedLevels;
     private double[] syncedValues;
 
@@ -133,12 +106,6 @@ public class ChocoboTrainingMenu extends AbstractContainerMenu {
         return trainingContainer;
     }
 
-    /**
-     * Server-side only: builds a fresh, server-authoritative snapshot of every stat's level
-     * (from the training container's own XP/level math) and current effective attribute value
-     * (AttributeInstance#getValue(), i.e. already run through Attribute#sanitizeValue()'s
-     * clamp) to send back in response to a ChocoboTrainingDataRequestPayload.
-     */
     public ChocoboTrainingDataPayload buildTrainingDataResponse() {
         ChocoboStat[] stats = ChocoboStat.values();
         int[] levels = new int[stats.length];
@@ -151,7 +118,6 @@ public class ChocoboTrainingMenu extends AbstractContainerMenu {
         return new ChocoboTrainingDataPayload(this.containerId, levels, values);
     }
 
-    /** Client-side only: stores the latest snapshot received from the server. */
     public void applySyncedTrainingData(int[] levels, double[] values) {
         this.syncedLevels = levels;
         this.syncedValues = values;

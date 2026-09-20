@@ -47,6 +47,10 @@ public class ChocoboWhistleItem extends Item {
         stack.set(ModDataComponents.BOUND_CHOCOBO.get(), chocobo.getUUID());
         stack.set(ModDataComponents.WHISTLE_COLOR.get(), chocobo.getVariant());
         applyBoundName(stack, chocobo.getName());
+        // interactLivingEntity() is handed a copy of the held stack (most noticeably in
+        // creative mode) - without writing it back, the component changes above never
+        // reach the real item, so the success message shows but the whistle stays unbound.
+        player.setItemInHand(hand, stack);
         player.sendOverlayMessage(Component.translatable("message.seifchocoboriders.whistle_bound"));
         return InteractionResult.SUCCESS;
     }

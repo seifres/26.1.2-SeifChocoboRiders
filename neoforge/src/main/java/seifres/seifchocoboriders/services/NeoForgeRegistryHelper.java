@@ -50,10 +50,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
-    // Populated by registerCreativeTab(...), which runs during CommonClass.init() - i.e.
-    // before register(IEventBus) below is ever called, so the real per-mod event bus isn't
-    // available yet at that point. We stash each tab's items here and add a single listener
-    // once the mod bus actually is available, in register(IEventBus) below.
     private static final Map<ResourceKey<CreativeModeTab>, List<? extends RegistryHandle<? extends ItemLike>>> TAB_ITEMS =
             new HashMap<>();
 
@@ -69,10 +65,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
 
     }
 
-    // BuildCreativeModeTabContentsEvent is an IModBusEvent, so it must be registered on the
-    // per-mod event bus (via eventBus.addListener above) rather than NeoForge.EVENT_BUS (the
-    // common/game bus) - registering an IModBusEvent listener on the game bus throws at mod
-    // construction time.
     private static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         List<? extends RegistryHandle<? extends ItemLike>> items = TAB_ITEMS.get(event.getTabKey());
         if (items != null) {
