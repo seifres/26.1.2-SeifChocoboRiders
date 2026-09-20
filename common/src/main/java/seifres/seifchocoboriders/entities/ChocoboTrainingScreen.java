@@ -129,18 +129,9 @@ public class ChocoboTrainingScreen extends AbstractContainerScreen<ChocoboTraini
             int level;
             double totalRaw;
             if (this.menu.hasSyncedTrainingData()) {
-                // Preferred path: the server-authoritative snapshot pulled via
-                // ChocoboTrainingDataRequestPayload/ChocoboTrainingDataPayload (see
-                // containerTick() above and ChocoboTrainingMenu's class comment). Already the
-                // real, sanitizeValue()-clamped effective value - no further math needed.
                 level = this.menu.getSyncedLevel(stats[i]);
                 totalRaw = this.menu.getSyncedValue(stats[i]);
             } else {
-                // Fallback for the brief window before the first response arrives: derive from
-                // the training-bonus AttributeModifier that recalculateTrainingBonuses() applies
-                // to this attribute (only added once the stat's been trained at all, so no
-                // modifier = level 0), riding the same already-synced AttributeInstance as the
-                // base value above.
                 AttributeModifier trainingModifier = attributeInstance != null
                         ? attributeInstance.getModifier(stats[i].modifierId())
                         : null;
@@ -148,9 +139,6 @@ public class ChocoboTrainingScreen extends AbstractContainerScreen<ChocoboTraini
                 level = stats[i].perLevelIncrease() != 0
                         ? (int) Math.round(trainingBonus / stats[i].perLevelIncrease())
                         : 0;
-                // Read the attribute's real effective value instead of manually re-summing
-                // base + bonus - AttributeInstance#getValue() runs it through
-                // Attribute#sanitizeValue()'s clamp, exactly like the synced-snapshot path above.
                 totalRaw = attributeInstance != null ? attributeInstance.getValue() : 0.0;
             }
             double rawDisplay = stats[i].toDisplayValue(totalRaw);

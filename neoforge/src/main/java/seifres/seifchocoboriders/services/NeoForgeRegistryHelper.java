@@ -190,12 +190,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         DeferredHolder<CreativeModeTab, CreativeModeTab> deferred = CREATIVE_TABS.register(name,
                 () -> builder.apply(CreativeModeTab.builder()).build());
 
-        // Populate contents via BuildCreativeModeTabContentsEvent rather than the builder's
-        // own .displayItems(...) - see the note on IRegistryHelper#registerCreativeTab for why
-        // (CreativeModeTab.Output is protected in NeoForge's patched Minecraft artifact). We
-        // can't register the listener here directly - this method runs during CommonClass.init(),
-        // before the real per-mod event bus is available (see register(IEventBus) above) - so we
-        // just stash the items and let the single listener registered there handle it.
         TAB_ITEMS.put(key, items);
 
         return new RegistryHandle<CreativeModeTab>() {

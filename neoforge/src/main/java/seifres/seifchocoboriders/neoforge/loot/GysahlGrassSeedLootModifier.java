@@ -31,8 +31,6 @@ public class GysahlGrassSeedLootModifier extends LootModifier {
         ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
         boolean sheared = tool != null && tool.is(Items.SHEARS);
 
-        // Shearing collects the grass plant itself - incidental seeds only make sense when the
-        // block is actually broken, matching how vanilla's own wheat-seed drop on grass works.
         if (!sheared && random.nextFloat() < CHANCE) {
             generatedLoot.add(new ItemStack(ModItems.GYSAHL_GREENS_SEED.get()));
         }

@@ -12,7 +12,6 @@ import seifres.seifchocoboriders.entities.ChocoboTrainingMenu;
 public class FabricNetwork {
 
     public static void register() {
-        // Use serverboundPlay() instead of playC2S()
         PayloadTypeRegistry.serverboundPlay().register(
                 ChocoboJumpPacket.TYPE,
                 ChocoboJumpPacket.STREAM_CODEC
@@ -38,9 +37,6 @@ public class FabricNetwork {
                 ChocoboTrainingDataPayload.STREAM_CODEC
         );
 
-        // Client -> server: a training screen asking for a fresh snapshot. Look up the
-        // sender's currently open menu (must actually be a ChocoboTrainingMenu with a
-        // matching containerId) and send the server-built response straight back.
         ServerPlayNetworking.registerGlobalReceiver(ChocoboTrainingDataRequestPayload.TYPE, (packet, context) -> {
             ServerPlayer player = context.player();
             if (player.containerMenu instanceof ChocoboTrainingMenu menu && menu.containerId == packet.containerId()) {

@@ -29,16 +29,10 @@ public final class FabricGysahlGrassLoot {
                 return;
             }
 
-            // LootTable.Builder#withPool() takes the LootPool.Builder itself, not a built
-            // LootPool - don't call .build() here, the table assembles it internally.
             LootPool.Builder pool = LootPool.lootPool()
                     .setRolls(ConstantValue.exactly(1.0F))
                     .add(LootItem.lootTableItem(ModItems.GYSAHL_GREENS_SEED.get())
-                            // Shearing collects the grass plant itself - incidental seeds only make
-                            // sense when the block is actually broken, matching short_grass's own
-                            // wheat-seed drop. MatchTool.toolMatches() takes an ItemPredicate.Builder
-                            // (not an Ingredient), built against the item registry lookup handed to
-                            // this callback.
+
                             .when(InvertedLootItemCondition.invert(MatchTool.toolMatches(
                                     ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), Items.SHEARS))))
                             .when(LootItemRandomChanceCondition.randomChance(CHANCE))
